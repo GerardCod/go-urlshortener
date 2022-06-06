@@ -17,8 +17,21 @@ func main() {
 
 	mapHandler := urlshort.MapHandler(pathsToUrls, mux)
 
+	yamlData := `
+- path: /urlshort
+  url: https://github.com/gophercises/urlshort
+- path: /urlshort-final
+  url: https://github.com/gophercises/urlshort/tree/solution
+`
+
+	yamlHandler, err := urlshort.YAMLHandler([]byte(yamlData), mapHandler)
+
+	if err != nil {
+		panic(err)
+	}
+
 	fmt.Println("Starting the server at port :8080")
-	http.ListenAndServe(":8080", mapHandler)
+	http.ListenAndServe(":8080", yamlHandler)
 }
 
 func defaultMux() *http.ServeMux {
